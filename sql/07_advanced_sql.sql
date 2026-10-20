@@ -24,6 +24,20 @@
 --    steadily from £798,732 (Dec 2009) to over £15.4M (by Aug 2011) with no
 --    unexplained jumps or drops, confirming the monthly revenue figures used
 --    elsewhere in the analysis are internally consistent.
+--
+-- 4. UK vs international order value, mean vs median (robustness check):
+--    Mean order value: UK £428.11, International £855.98 (about 2x).
+--    Median order value: UK £299.41, International £419.85 (about 1.4x).
+--    The international mean is about double its median, so a small number
+--    of very large orders pull the average up. International orders are
+--    still higher-value, but the typical gap is closer to 1.4x than 2x.
+--
+-- 5. International revenue concentration:
+--    5 of 526 international customers (under 1%) generate £1,303,708.33,
+--    which is 46.71% of international revenue (£2,791,338.18). The
+--    international segment depends heavily on a handful of accounts.
+--    Implication: protect and grow key international accounts before
+--    investing in broad international marketing.
 -- ============================================================
 
 -- Query 1: Top-selling product per country (window function, PARTITION BY)
@@ -82,3 +96,42 @@ SELECT
     ROUND(SUM(monthly_revenue) OVER (ORDER BY month)::numeric, 2) AS running_total_revenue
 FROM monthly
 ORDER BY month;
+
+WITH inv AS (
+    SELECT t.customer_id, c.country, t.invoice, SUM(t.revenue) AS invoice_total
+    FROM transactions t
+    JOIN customers c ON t.customer_id = c.customer_id
+    WHERE NOT t.is_cancelled AND NOT t.is_non_product AND NOT t.is_stock_adjustment
+    GROUP BY t.customer_id, c.country, t.invoice
+)
+SELECT
+    CASE WHEN country = 'United Kingdom' THEN 'UK' ELSE 'International' END AS market,
+    COUNT(*) AS orders,
+    ROUND(AVG(invoice_total)::numeric, 2) AS mean_order_value,
+    ROUND((PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY invoice_total))::numeric, 2) AS median_order_value
+FROM inv
+GROUP BY 1
+ORDER BY 1 DESC;
+
+WITH inv AS (
+    SELECT t.customer_id, c.country, t.invoice, SUM(t.revenue) AS invoice_total
+    FROM transactions t
+    JOIN customers c ON t.customer_id = c.customer_id
+    WHERE NOT t.is_cancelled AND NOT t.is_non_product AND NOT t.is_stock_adjustment
+    GROUP BY t.customer_id, c.country, t.invoice
+),
+intl AS (
+    SELECT customer_id, SUM(invoice_total) AS cust_rev
+    FROM inv WHERE country <> 'United Kingdom'
+    GROUP BY customer_id
+),
+top5 AS (
+    SELECT SUM(cust_rev) AS top5_revenue
+    FROM (SELECT cust_rev FROM intl ORDER BY cust_rev DESC LIMIT 5) x
+)
+SELECT
+    COUNT(*) AS intl_customers,
+    ROUND(MAX(top5.top5_revenue)::numeric, 2) AS top5_revenue,
+    ROUND(SUM(cust_rev)::numeric, 2) AS intl_revenue,
+    ROUND((100 * MAX(top5.top5_revenue) / SUM(cust_rev))::numeric, 2) AS top5_pct
+FROM intl CROSS JOIN top5;
