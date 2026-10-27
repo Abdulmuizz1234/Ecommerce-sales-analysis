@@ -61,19 +61,30 @@ Cancelled transactions are 1.85% of all transactions (19,104 of 1,033,031), and 
 
 ## Recommendations
 
-International: Build dedicated account management for the top international customers and test whether growth in that segment holds, because 5 of 526 international customers generate 47% of international revenue.
-
-Repeat customers: Test early access or priority service for the 1,831 Champions, and run a win-back offer for the 439 At Risk customers before they lapse, because Champions generate 76% of identified-customer revenue.
-
-Seasonality: Plan stock and fulfilment capacity ahead of September–November, and contact customers who bought in previous autumns with early-booking offers, because revenue rose 65% from September to November 2010 (£869,727 to £1,437,824).
-
-Cancellations:Calculate cancelled units ÷ units sold for the top-selling products, then investigate those with the highest rates, because the overall rate is stable at 1.85% and the Regency Cakestand (341) and White Hanging Heart T-Light Holder (134) figures are counts, not rates.
+- **International:** Build dedicated account management for the top international customers and test whether growth in that segment holds, because 5 of 526 international customers generate 47% of international revenue.
+- **Repeat customers:** Test early access or priority service for the 1,831 Champions, and run a win-back offer for the 439 At Risk customers before they lapse, because Champions generate 76% of identified-customer revenue.
+- **Seasonality:** Plan stock and fulfilment capacity ahead of September–November, and contact customers who bought in previous autumns with early-booking offers, because revenue rose 65% from September to November 2010 (£869,727 to £1,437,824).
+- **Cancellations:** Calculate cancelled units ÷ units sold for the top-selling products, then investigate those with the highest rates, because the overall rate is stable at 1.85% and the Regency Cakestand (341) and White Hanging Heart T-Light Holder (134) figures are counts, not rates.
 ## Limitations
 
-Coverage
+**Coverage**
+- One UK-based online retailer, Dec 2009 to Dec 2011, so results may not generalise.
+- December 2011 contains only 9 days, so that month is understated; seasonal conclusions rest on only two Novembers.
 
-One UK-based online retailer, Dec 2009 to Dec 2011, so results may not generalise.
-December 2011 contains only 9 days, so that month is understated; seasonal conclusions rest on only two Novembers.
+**Data quality**
+- About 22.8% of rows (243,007) have no Customer ID. These guest orders are 13.3% of revenue (£2,614,956.24) and are excluded from customer-level analysis (repeat rate, RFM, concentration, country comparison).
+- 486 product codes (1.84% of revenue, £362,819.20) carry the description "Unknown" and are excluded from product-level results. Part of this is probably an artefact of how the `products` table keeps the first description per stock code.
+- 34,335 exact duplicate rows (~3.2%) were removed in cleaning on the assumption they are accidental double entries; the data cannot confirm this. If every one were a genuine repeat purchase, revenue would be understated by at most about £496,000 (about 2.5% of £19.7M), which would be unlikely to change the direction of any finding.
+- Cancelled orders (1.85% of transactions) were removed from revenue and analysed separately. The data gives no cancellation reasons.
+
+**Analysis choices**
+- All figures are revenue. There is no cost, margin or shipping data, so profitability can't be assessed.
+- RFM segment boundaries come from quartile scoring, and the labels are a judgement call.
+- "One-time buyers" may include recent customers whose second order falls after the data ends.
+- Order-value averages are skewed by a few very large orders, so the median is reported alongside the mean.
+
+**What the data cannot show**
+- The data is observational. The findings show patterns, not causes, and the recommendations are hypotheses to test.
 
 
 
@@ -115,17 +126,15 @@ Ecommerce-sales-analysis/
 1. Clone the repo and create an environment:
    ```
    git clone https://github.com/Abdulmuizz1234/Ecommerce-sales-analysis.git
-    cd Ecommerce-sales-analysis
-    python -m venv .venv
-    .venv\Scripts\activate
-    pip install -r requirements.txt
+   cd Ecommerce-sales-analysis
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
    ```
-2. Download the dataset (link above) and save it as `data/raw/online_retail_II.xlsx`.
+   On Mac or Linux, use `source .venv/bin/activate` instead of the activate line above.
+2. Create the folders `data/raw` and `data/processed` in the project root. Download the dataset (link above) and save it as `data/raw/online_retail_II.xlsx`.
 3. Run `notebooks/01_data_quality_and_cleaning.ipynb`. It cleans the data and writes the processed CSVs to `data/processed/`.
 4. Install PostgreSQL, create a database called `ecommerce`, set your password in the connection string in notebook 03, and run it to load the `customers`, `products` and `transactions` tables.
 5. Run the SQL files in `sql/` in order (01 to 07) in pgAdmin's Query Tool or `psql`.
 6. Run notebooks 02, 04 and 05 for the charts and the written insights.
 
-## How to run it
-
-[steps, see below]
