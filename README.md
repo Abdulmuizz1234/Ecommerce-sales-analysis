@@ -55,9 +55,10 @@ Monthly revenue builds through autumn and peaks in November in both years. In 20
 ![Monthly revenue trend](visuals/monthly_revenue_trend.png)
 
 ![Revenue by calendar month](visuals/seasonal_revenue.png)
+
 ### 4. Cancellations are low and steady
 
-Cancelled transactions are 1.85% of all transactions (19,104 of 1,033,031), and the monthly rate stays between 1.3% and 2.8% with no seasonal spike. November 2011, the peak revenue month, had one of the lowest rates (1.29%), which suggests fulfilment held up during the busiest period. A few products stand out by count: Regency Cakestand 3 Tier was cancelled 341 times and White Hanging Heart T-Light Holder 134 times, though both are also top sellers, so their cancellation *rates* still need checking.
+Cancelled transactions are 1.85% of all transactions (19,104 of 1,033,031), and the monthly rate stays roughly between 1.3% and 2.8% with no seasonal spike. November 2011, the peak revenue month, had one of the lowest rates (1.29%), which is consistent with fulfilment holding up during the busiest period. A few products stand out by count: Regency Cakestand 3 Tier was cancelled 341 times and White Hanging Heart T-Light Holder 134 times, though both are also top sellers, so their cancellation *rates* still need checking.
 
 ## Recommendations
 
@@ -65,6 +66,7 @@ Cancelled transactions are 1.85% of all transactions (19,104 of 1,033,031), and 
 - **Repeat customers:** Test early access or priority service for the 1,831 Champions, and run a win-back offer for the 439 At Risk customers before they lapse, because Champions generate 76% of identified-customer revenue.
 - **Seasonality:** Plan stock and fulfilment capacity ahead of September–November, and contact customers who bought in previous autumns with early-booking offers, because revenue rose 65% from September to November 2010 (£869,727 to £1,437,824).
 - **Cancellations:** Calculate cancelled units ÷ units sold for the top-selling products, then investigate those with the highest rates, because the overall rate is stable at 1.85% and the Regency Cakestand (341) and White Hanging Heart T-Light Holder (134) figures are counts, not rates.
+
 ## Limitations
 
 **Coverage**
